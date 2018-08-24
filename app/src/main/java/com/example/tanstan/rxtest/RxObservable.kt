@@ -117,3 +117,23 @@ fun useOfSingle() {
 
             })
 }
+
+fun useOfCompletable() {
+    Maybe.fromCallable { "Hello World" }
+            .ignoreElement()
+            .subscribe(object : CompletableObserver {
+
+                override fun onComplete() {
+                    System.out.println("on complete")
+                }
+
+                override fun onSubscribe(d: Disposable) {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+            })
+}

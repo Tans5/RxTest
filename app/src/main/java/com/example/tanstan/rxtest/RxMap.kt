@@ -68,7 +68,7 @@ fun useOfConcatMap() {
             })
 }
 
-fun useOfSwtichMap() {
+fun useOfSwitchMap() {
     Observable.fromIterable(listOf(1,2,3,4,5,6))
             .switchMap {
                 Observable.just(it)
