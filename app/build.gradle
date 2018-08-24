@@ -22,6 +22,7 @@ android {
     }
 }
 def rxVersion = '2.2.0'
+def rxAndroidVersion = '2.0.2'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -31,4 +32,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation "io.reactivex.rxjava2:rxjava:$rxVersion"
+    implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: "$rxAndroidVersion"
 }
