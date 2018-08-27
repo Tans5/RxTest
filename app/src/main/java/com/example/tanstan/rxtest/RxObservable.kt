@@ -1,8 +1,12 @@
 package com.example.tanstan.rxtest
 
 import io.reactivex.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.DisposableSubscriber
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
 import java.util.concurrent.TimeUnit
 
 
@@ -136,4 +140,74 @@ fun useOfCompletable() {
                 }
 
             })
+}
+
+fun useOfDefer() {
+    var msg = "Hello"
+    val obs = Observable.defer {
+        Observable.just(msg)
+    }
+
+    obs.subscribe(object : Observer<String> {
+        override fun onSubscribe(d: Disposable) {
+        }
+
+        override fun onNext(t: String) {
+            System.out.println("on next: $t")
+        }
+
+        override fun onError(e: Throwable) {
+
+        }
+
+        override fun onComplete() {
+            System.out.println("on complete")
+        }
+
+
+    })
+
+    msg += ",World!!"
+
+    obs.subscribe(object : Observer<String> {
+        override fun onSubscribe(d: Disposable) {
+        }
+
+        override fun onNext(t: String) {
+            System.out.println("on next: $t")
+        }
+
+        override fun onError(e: Throwable) {
+
+        }
+
+        override fun onComplete() {
+            System.out.println("on complete")
+        }
+
+
+    })
+}
+
+fun useOfTimer() {
+    val obs = Observable.timer(3, TimeUnit.SECONDS)
+    obs.subscribe(object : Observer<Long> {
+        override fun onComplete() {
+            System.out.println("on complete")
+        }
+
+        override fun onSubscribe(d: Disposable) {
+
+        }
+
+        override fun onNext(t: Long) {
+            System.out.println("on next: $t")
+        }
+
+        override fun onError(e: Throwable) {
+
+        }
+
+    })
+
 }
