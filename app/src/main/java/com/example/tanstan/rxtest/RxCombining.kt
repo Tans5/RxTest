@@ -7,6 +7,10 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
+import javax.xml.datatype.DatatypeConstants.SECONDS
+
+
 
 fun useOfStartWith() {
     Observable.just("Tans", "Yanyan")
@@ -173,4 +177,33 @@ fun useOfWithLatestFrom() {
     })
     sub1.onNext("Hi~")
     sub2.onNext("Tans")
+}
+
+fun useOfSwitchOnNext() {
+    val timeIntervals = Observable.interval(10, TimeUnit.SECONDS)
+            .map { ticks ->
+                Observable.interval(2, TimeUnit.SECONDS)
+                        .map { innerInterval -> "outer: $ticks - inner: $innerInterval" }
+            }
+//            .flatMap { it }
+//            .subscribe { System.out.println("on next: $it") }
+    Observable.switchOnNext(timeIntervals)
+            .subscribe { item -> System.out.println(item) }
+}
+
+fun useOfJoin() {
+    val itemIntervals = Observable.interval(2, TimeUnit.SECONDS)
+
+    Observable.just("just do it")
+            .join(itemIntervals,
+                    Function<String, Observable<Long>> {
+                        Observable.timer(5000, TimeUnit.MILLISECONDS)
+                    },
+                    Function<Long, Observable<Long>> {
+                        Observable.timer(4000, TimeUnit.MILLISECONDS)
+                    },
+                    BiFunction<String, Long, String> { a1, a2 ->
+                        "$a1 $a2"
+                    })
+            .subscribe { System.out.println(it) }
 }
